@@ -1,4 +1,4 @@
-name: Deploy drivestate-estatengine-backend
+name: Deploy drivestate-AI-Agent
 
 on:
     push:
@@ -7,7 +7,8 @@ on:
             - ai-agent
 jobs:
     deploy:
-        name: Deploy Backend
+        name: Deploy Agent
+        
         runs-on: ubuntu-latest
 
         env:

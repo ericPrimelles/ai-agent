@@ -31,11 +31,8 @@ package:
     
     - src/dist/*
 
-parameters:
-  ModelId:
-    Type: String
-    Default: "amazon.nova-micro-v1:0"  # Change to your desired model ID
-   
+
+  
 functions:
   openai:
     name: dvst-ai-agent-search-lambda-${sls:stage}
@@ -48,6 +45,11 @@ functions:
       TAVILY_API_KEY: ${env:TAVILY_API_KEY}  # Ensure this is set in your environment or secrets
 
 resources:
+  Parameters:
+    ModelId:
+      Type: String
+      Default: "amazon.nova-micro-v1:0"  # Change to your desired model ID
+    
   Resources:
     AiDvstAgentServiceRole:
       Type: AWS::IAM::Role
