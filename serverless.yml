@@ -77,7 +77,7 @@ resources:
       Properties:
         AgentName: dvst-ai-agent-${sls:stage}
         Description: "AI Agent for driving state data"
-        RoleArn: !GetAtt AiDvstAgentServiceRole.Arn
+        AgentResourceRoleArn: !GetAtt AiDvstAgentServiceRole.Arn
         FoundationModel: !Ref ModelId 
         Instruction: "You are a real estate assistant. Use tools when necessary to answer user questions."
         
