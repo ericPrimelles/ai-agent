@@ -82,7 +82,7 @@ resources:
         Instruction: "You are a real estate assistant. Use tools when necessary to answer user questions."
     
     AiDvstActionGroup:
-      Type: AWS::Bedrock::ActionGroup
+      Type: AWS::Bedrock::AgentActionGroup
       Properties:
         AgentId: !GetAtt AiDvstAgent.AgentId
         ActionGroupName: "WebSearch"
