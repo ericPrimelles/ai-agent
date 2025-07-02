@@ -1,0 +1,46 @@
+service: dvst-ai-agent-${env:STAGE}  # Change to your project/service name
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: python3.11  # or python3.11, etc.
+  region: us-east-2
+  stage: ${env:STAGE}
+  memorySize: 128
+  timeout: 10
+  environment:
+    STAGE: ${opt:stage, 'dev'}
+    APP_NAME: my-service-name
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: "arn:aws:logs"
+
+
+package:
+  individually: true 
+  exclude:
+    - ./**
+  include:
+    
+    - src/dist/*
+   
+functions:
+  openai:
+    name: dvst-ai-agent-search-lambda-${sls:stage}
+    handler: search_lambda.handler
+    package: 
+      # include:
+      #   - src/openai_proxy/*
+      artifact: src/dist/search_lambda.zip
+    environment:
+      TAVILY_API_KEY: ${env:TAVILY_API_KEY}  # Ensure this is set in your environment or secrets
+# resources:
+#   Resources:
+  

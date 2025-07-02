@@ -1,6 +1,6 @@
 from langchain_tavily import TavilySearch
 import os
-def handle(event, context):
+def handler(event, context):
     """
     Lambda function handler to process search requests.
     
@@ -12,7 +12,7 @@ def handle(event, context):
         dict: The response containing search results.
     """
     try:
-        os.environ['TAVILY_API_KEY'] = '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'  # Replace with your actual API key
+        
         search = TavilySearch(
             max_results=5,
             include_images=True,
