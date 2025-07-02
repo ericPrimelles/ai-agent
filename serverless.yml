@@ -71,7 +71,19 @@ resources:
                     - lambda:InvokeFunction
                   Resource: 
                     - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}"
-
+          - PolicyName: Bedrock
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - "bedrock:InvokeAgent"
+                    - "bedrock:ListAgents"
+                    - "bedrock:GetAgent"
+                    - "bedrock:GetAgentActionGroup"
+                    - "bedrock:ListAgentActionGroups"
+                    - "bedrock:InvokeAgentWithResponseStream"
+                  Resource: "*"
     AiDvstAgent:
       Type: AWS::Bedrock::Agent
       Properties:
@@ -81,17 +93,17 @@ resources:
         FoundationModel: !Ref ModelId 
         Instruction: "You are a real estate assistant. Use tools when necessary to answer user questions."
     
-    AiDvstActionGroup:
-      Type: AWS::Bedrock::AgentActionGroup
-      Properties:
-        AgentId: !GetAtt AiDvstAgent.AgentId
-        ActionGroupName: "WebSearch"
-        Description: "Calls web search Lambda to retrieve real-time information."
-        FunctionArn: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}"
-        ActionGroupExecutor: Lambda
-        ActionGroupInputParameters:
-          - Name: query
-            Type: STRING
-        AgentVersion: DRAFT  # Must be draft to allow editing
+    # AiDvstActionGroup:
+    #   Type: AWS::Bedrock::AgentActionGroup
+    #   Properties:
+    #     AgentId: !GetAtt AiDvstAgent.AgentId
+    #     ActionGroupName: "WebSearch"
+    #     Description: "Calls web search Lambda to retrieve real-time information."
+    #     FunctionArn: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}"
+    #     ActionGroupExecutor: Lambda
+    #     ActionGroupInputParameters:
+    #       - Name: query
+    #         Type: STRING
+    #     AgentVersion: DRAFT  # Must be draft to allow editing
                     
                     
