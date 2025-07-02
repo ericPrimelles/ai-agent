@@ -100,7 +100,7 @@ resources:
         Description: "AI Agent for driving state data"
         AgentResourceRoleArn: !GetAtt AiDvstAgentServiceRole.Arn
         FoundationModel: !Sub "arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:inference-profile/${ModelId}"  # Use the ModelId parameter defined above
-        Autoprepare: true
+        AutoPrepare: true
         Instruction: "You are a real estate assistant. Use tools when necessary to answer user questions."
     
     # AiDvstActionGroup:
