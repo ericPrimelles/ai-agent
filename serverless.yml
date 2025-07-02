@@ -92,7 +92,7 @@ resources:
                   Action:
                     - "bedrock:InvokeModel"
                     - "bedrock:ListFoundationModels"
-                  Resource: !Sub "arn:aws:bedrock:${AWS::Region}::foundation-model/${Model}"  # Use the ModelId parameter defined above
+                  Resource: !Sub "arn:aws:bedrock:${AWS::Region}::foundation-model/${ModelId}"  # Use the ModelId parameter defined above
     AiDvstAgent:
       Type: AWS::Bedrock::Agent
       Properties:
