@@ -48,7 +48,7 @@ resources:
   Parameters:
     ModelId:
       Type: String
-      Default: "anthropic.claude-3-5-sonnet-20241022-v2:0"  # Change to your desired model ID
+      Default: "amazon.nova-pro-v1:0"  # Change to your desired model ID
     
   Resources:
     AiDvstAgentServiceRole:
