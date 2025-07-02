@@ -84,7 +84,7 @@ resources:
     AiDvstActionGroup:
       Type: AWS::Bedrock::ActionGroup
       Properties:
-        AgentId: !GetAtt BedrockAgent.AgentId
+        AgentId: !GetAtt AiDvstAgent.AgentId
         ActionGroupName: "WebSearch"
         Description: "Calls web search Lambda to retrieve real-time information."
         FunctionArn: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}"
