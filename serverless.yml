@@ -30,6 +30,11 @@ package:
   include:
     
     - src/dist/*
+
+parameters:
+  ModelId:
+    Type: String
+    Default: "amazon.nova-micro-v1:0"  # Change to your desired model ID
    
 functions:
   openai:
@@ -41,6 +46,38 @@ functions:
       artifact: src/dist/search_lambda.zip
     environment:
       TAVILY_API_KEY: ${env:TAVILY_API_KEY}  # Ensure this is set in your environment or secrets
-# resources:
-#   Resources:
-  
+
+resources:
+  Resources:
+    AiDvstAgentServiceRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service: bedrock.amazonaws.com
+              Action: sts:AssumeRole
+        Policies:
+          - PolicyName: Lambda
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - lambda:InvokeFunction
+                  Resource: 
+                    - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}"
+
+    AiDvstAgent:
+      Type: AWS::Bedrock::Agent
+      Properties:
+        AgentName: dvst-ai-agent-${sls:stage}
+        Description: "AI Agent for driving state data"
+        RoleArn: !GetAtt AiDvstAgentServiceRole.Arn
+        FoundationModel: !Ref ModelId 
+        Instructions: "You are a real estate assistant. Use tools when necessary to answer user questions."
+        
+                   
+                    
