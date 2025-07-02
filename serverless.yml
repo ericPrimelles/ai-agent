@@ -80,6 +80,18 @@ resources:
         AgentResourceRoleArn: !GetAtt AiDvstAgentServiceRole.Arn
         FoundationModel: !Ref ModelId 
         Instruction: "You are a real estate assistant. Use tools when necessary to answer user questions."
-        
-                   
+    
+    AiDvstActionGroup:
+      Type: AWS::Bedrock::ActionGroup
+      Properties:
+        AgentId: !GetAtt BedrockAgent.AgentId
+        ActionGroupName: "WebSearch"
+        Description: "Calls web search Lambda to retrieve real-time information."
+        FunctionArn: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}"
+        ActionGroupExecutor: Lambda
+        ActionGroupInputParameters:
+          - Name: query
+            Type: STRING
+        AgentVersion: DRAFT  # Must be draft to allow editing
+                    
                     
