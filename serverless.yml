@@ -109,7 +109,7 @@ resources:
           - ActionGroupName: web_search
             Description: "Web search action"
             ActionGroupExecutor:
-              Lambda:  "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}"
+              Lambda:  "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}:$LATEST"
             FunctionSchema:
               Functions:
                 - Name: web_search
