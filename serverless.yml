@@ -75,13 +75,13 @@ resources:
                   Resource: 
                     - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}"
                     - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}:$LATEST"
-        AiDvstWebSearchLambdaPermissions:
-          Type: AWS::Lambda::Permission
-          Properties:
-            Action: lambda:InvokeFunction
-            FunctionName: !Sub "dvst-ai-agent-search-lambda-${sls:stage}"
-            Principal: bedrock.amazonaws.com
-            SourceArn: !Sub "arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:agent/*"
+    AiDvstWebSearchLambdaPermissions:
+      Type: AWS::Lambda::Permission
+      Properties:
+        Action: lambda:InvokeFunction
+        FunctionName: !Sub "dvst-ai-agent-search-lambda-${sls:stage}"
+        Principal: bedrock.amazonaws.com
+        SourceArn: !Sub "arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:agent/*"
           # - PolicyName: Bedrock
           #   PolicyDocument:
           #     Version: '2012-10-17'
