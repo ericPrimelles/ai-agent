@@ -110,5 +110,11 @@ resources:
             Description: "Web search action"
             ActionGroupExecutor:
               Lambda:  "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}"
-            ApiSchema:
-              Payload: ${file(./schemas/web_search_payload.yml)}
+            FunctionSchema:
+              Functions:
+                - Name: web_search
+                  Description: "Search the web for public real estate information"
+                  Parameters: 
+                    - Name: query
+                      Type: String
+                      Description: "The search query to use"
