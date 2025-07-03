@@ -72,8 +72,8 @@ resources:
                 - Effect: Allow
                   Action:
                     - lambda:InvokeFunction
-                  Resource: 
-                    - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}"
+                  Resource: '*'
+                    #- !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}"
                     #- !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}:$LATEST"
     
           # - PolicyName: Bedrock
