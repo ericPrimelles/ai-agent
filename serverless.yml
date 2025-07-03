@@ -151,6 +151,6 @@ resources:
       DependsOn: AiDvstAgentAlias
       Properties:
         Action: lambda:InvokeFunction
-        FunctionName: !Sub "dvst-ai-agent-search-lambda-${sls:stage}"
+        FunctionName: !Sub "dvst-ai-agent-search-lambda-${sls:stage}:$LATEST"
         Principal: bedrock.amazonaws.com
         SourceArn: !GetAtt AiDvstAgentAlias.AgentAliasArn
