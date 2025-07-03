@@ -4,7 +4,7 @@ frameworkVersion: '4'
 
 provider:
   name: aws
-  runtime: python3.11  # or python3.11, etc.
+  runtime: python3.13  # or python3.11, etc.
   region: us-east-1
   stage: ${env:STAGE}
   memorySize: 128
