@@ -116,6 +116,6 @@ resources:
                   Description: "Search the web for public real estate information"
                   Parameters: 
                     query:
-                      Type: String
+                      Type: string
                       Description: "Search query for the web search"
                       Required: true
