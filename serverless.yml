@@ -83,6 +83,14 @@ resources:
                     - "bedrock:GetAgentActionGroup"
                     - "bedrock:ListAgentActionGroups"
                     - "bedrock:InvokeAgentWithResponseStream"
+                    - "bedrock:CreateAgent",
+                    - "bedrock:UpdateAgent",
+                    - "bedrock:DeleteAgent",
+                    - "bedrock:GetAgent",
+                    - "bedrock:ListAgents",
+                    - "bedrock:CreateAgentVersion",
+                    - "bedrock:CreateAgentAlias",
+                    - "bedrock:UpdateAgentAlias"
                   Resource: "*"
           - PolicyName: NovaModelAccess
             PolicyDocument:
