@@ -91,6 +91,9 @@ resources:
                     - "bedrock:CreateAgentVersion"
                     - "bedrock:CreateAgentAlias"
                     - "bedrock:UpdateAgentAlias"
+                    - "bedrock:GetInferenceProfile"
+                    - "bedrock:ListInferenceProfiles"
+                    - "bedrock:UseInferenceProfile"
                     
                   Resource: "*"
           - PolicyName: NovaModelAccess
