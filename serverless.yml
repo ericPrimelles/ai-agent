@@ -126,5 +126,5 @@ resources:
         AgentId: !Ref AiDvstAgent
         AgentAliasName: dvst-ai-agent-alias-${sls:stage}
         Description: "Alias for the AI Agent"
-        RoutingConfiguration:
-          - AgentVersion: 1
+        # RoutingConfiguration:
+        #   - AgentVersion: "1"
