@@ -119,3 +119,12 @@ resources:
                       Type: string
                       Description: "Search query for the web search"
                       Required: true
+    
+    AiDvstAgentAlias:
+      Type: AWS::Bedrock::AgentAlias
+      Properties:
+        AgentId: !Ref AiDvstAgent
+        AgentAliasName: dvst-ai-agent-alias-${sls:stage}
+        Description: "Alias for the AI Agent"
+        RoutingConfiguration:
+          AgentVersion: DRAFT
