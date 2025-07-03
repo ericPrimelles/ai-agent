@@ -8,11 +8,11 @@ on:
 jobs:
     deploy:
         name: Deploy Agent
-        
+
         runs-on: ubuntu-latest
 
         env:
-            AWS_REGION: us-east-2
+            AWS_REGION: us-east-1
             STAGE: dev
             SERVERLESS_ACCESS_KEY: ${{secrets.SERVERLESS_ACCESS_KEY}}
         
