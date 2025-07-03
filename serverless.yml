@@ -5,7 +5,7 @@ frameworkVersion: '4'
 provider:
   name: aws
   runtime: python3.11  # or python3.11, etc.
-  region: us-east-2
+  region: us-east-1
   stage: ${env:STAGE}
   memorySize: 128
   timeout: 10
@@ -153,4 +153,4 @@ resources:
         Action: lambda:InvokeFunction
         FunctionName: !Sub "dvst-ai-agent-search-lambda-${sls:stage}"
         Principal: bedrock.amazonaws.com
-        SourceArn: !GetAtt AiDvstAgentAlias.AgentAliasArn
+        SourceArn: "arn:aws:bedrock:{AWS::Region}:${AWS::AccountId}:agent/*"
