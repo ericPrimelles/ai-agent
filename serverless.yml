@@ -94,7 +94,7 @@ resources:
                     - "bedrock:ListFoundationModels"
                   Resource: 
                     - !Sub "arn:aws:bedrock:${AWS::Region}::foundation-model/${ModelId}"  # Use the ModelId parameter defined above
-                    
+                    - !Sub "arn:aws:bedrock:${AWS::Regiopn}:${AWS::AccountId}:inference-profile/*" #us.amazon.nova-pro-v1:0
 
     AiDvstAgent:
       Type: AWS::Bedrock::Agent
@@ -102,7 +102,7 @@ resources:
         AgentName: dvst-ai-agent-${sls:stage}
         Description: "AI Agent for driving state data"
         AgentResourceRoleArn: !GetAtt AiDvstAgentServiceRole.Arn
-        FoundationModel: !Ref ModelId  # Use the ModelId parameter defined above
+        FoundationModel: !Sub "arn:aws:bedrock:${AWS::Regiopn}:${AWS::AccountId}:inference-profile/{!ModelId}"  # Use the ModelId parameter defined above
         AutoPrepare: true
         Instruction: "You are a real estate assistant. Use tools when necessary to answer user questions."
         ActionGroups:
