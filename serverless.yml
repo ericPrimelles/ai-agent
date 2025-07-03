@@ -61,6 +61,9 @@ resources:
               Principal:
                 Service: bedrock.amazonaws.com
               Action: sts:AssumeRole
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/AmazonBedrockFullAccess
+
         Policies:
           - PolicyName: Lambda
             PolicyDocument:
@@ -71,42 +74,42 @@ resources:
                     - lambda:InvokeFunction
                   Resource: 
                     - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}"
-          - PolicyName: Bedrock
-            PolicyDocument:
-              Version: '2012-10-17'
-              Statement:
-                - Effect: Allow
-                  Action:
-                    - "bedrock:InvokeAgent"
-                    - "bedrock:ListAgents"
-                    - "bedrock:GetAgent"
-                    - "bedrock:GetAgentActionGroup"
-                    - "bedrock:ListAgentActionGroups"
-                    - "bedrock:InvokeAgentWithResponseStream"
-                    - "bedrock:CreateAgent"
-                    - "bedrock:UpdateAgent"
-                    - "bedrock:DeleteAgent"
-                    - "bedrock:GetAgent"
-                    - "bedrock:ListAgents"
-                    - "bedrock:CreateAgentVersion"
-                    - "bedrock:CreateAgentAlias"
-                    - "bedrock:UpdateAgentAlias"
-                    - "bedrock:GetInferenceProfile"
-                    - "bedrock:ListInferenceProfiles"
-                    - "bedrock:UseInferenceProfile"
+          # - PolicyName: Bedrock
+          #   PolicyDocument:
+          #     Version: '2012-10-17'
+          #     Statement:
+          #       - Effect: Allow
+          #         Action:
+          #           - "bedrock:InvokeAgent"
+          #           - "bedrock:ListAgents"
+          #           - "bedrock:GetAgent"
+          #           - "bedrock:GetAgentActionGroup"
+          #           - "bedrock:ListAgentActionGroups"
+          #           - "bedrock:InvokeAgentWithResponseStream"
+          #           - "bedrock:CreateAgent"
+          #           - "bedrock:UpdateAgent"
+          #           - "bedrock:DeleteAgent"
+          #           - "bedrock:GetAgent"
+          #           - "bedrock:ListAgents"
+          #           - "bedrock:CreateAgentVersion"
+          #           - "bedrock:CreateAgentAlias"
+          #           - "bedrock:UpdateAgentAlias"
+          #           - "bedrock:GetInferenceProfile"
+          #           - "bedrock:ListInferenceProfiles"
+          #           - "bedrock:UseInferenceProfile"
                     
-                  Resource: "*"
-          - PolicyName: NovaModelAccess
-            PolicyDocument:
-              Version: '2012-10-17'
-              Statement:
-                - Effect: Allow
-                  Action:
-                    - "bedrock:InvokeModel"
-                    - "bedrock:ListFoundationModels"
-                  Resource: 
-                    #- !Sub "arn:aws:bedrock:${AWS::Region}::foundation-model/${ModelId}"  # Use the ModelId parameter defined above
-                    - !Sub "arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:inference-profile/*" #us.amazon.nova-pro-v1:0
+          #         Resource: "*"
+          # - PolicyName: NovaModelAccess
+          #   PolicyDocument:
+          #     Version: '2012-10-17'
+          #     Statement:
+          #       - Effect: Allow
+          #         Action:
+          #           - "bedrock:InvokeModel"
+          #           - "bedrock:ListFoundationModels"
+          #         Resource: 
+          #           #- !Sub "arn:aws:bedrock:${AWS::Region}::foundation-model/${ModelId}"  # Use the ModelId parameter defined above
+          #           - !Sub "arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:inference-profile/*" #us.amazon.nova-pro-v1:0
 
     AiDvstAgent:
       Type: AWS::Bedrock::Agent
