@@ -74,7 +74,7 @@ resources:
                     - lambda:InvokeFunction
                   Resource: 
                     - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}"
-                    - !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}:$LATEST"
+                    #- !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}:$LATEST"
     
           # - PolicyName: Bedrock
           #   PolicyDocument:
@@ -126,7 +126,7 @@ resources:
           - ActionGroupName: web_search
             Description: "Web search action"
             ActionGroupExecutor:
-              Lambda:  !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}:$LATEST"
+              Lambda:  !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}"
             FunctionSchema:
               Functions:
                 - Name: web_search
@@ -151,6 +151,6 @@ resources:
       DependsOn: AiDvstAgentAlias
       Properties:
         Action: lambda:InvokeFunction
-        FunctionName: !Sub "dvst-ai-agent-search-lambda-${sls:stage}:$LATEST"
+        FunctionName: !Sub "dvst-ai-agent-search-lambda-${sls:stage}"
         Principal: bedrock.amazonaws.com
         SourceArn: !GetAtt AiDvstAgentAlias.AgentAliasArn
