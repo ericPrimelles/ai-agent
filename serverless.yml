@@ -105,18 +105,10 @@ resources:
         FoundationModel: !Ref ModelId  # Use the ModelId parameter defined above
         AutoPrepare: true
         Instruction: "You are a real estate assistant. Use tools when necessary to answer user questions."
-    
-    # AiDvstActionGroup:
-    #   Type: AWS::Bedrock::AgentActionGroup
-    #   Properties:
-    #     AgentId: !GetAtt AiDvstAgent.AgentId
-    #     ActionGroupName: "WebSearch"
-    #     Description: "Calls web search Lambda to retrieve real-time information."
-    #     FunctionArn: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}"
-    #     ActionGroupExecutor: Lambda
-    #     ActionGroupInputParameters:
-    #       - Name: query
-    #         Type: STRING
-    #     AgentVersion: DRAFT  # Must be draft to allow editing
-                    
-                    
+        ActionGroups:
+          - ActionGroupName: web_search
+            Description: "Web search action"
+            ActionGroupExecutor:
+              Lambda:  "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}"
+            ApiSchema:
+              Payload: ${file(./schemas/web_search_payload.yml)}
