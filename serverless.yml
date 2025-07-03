@@ -127,4 +127,4 @@ resources:
         AgentAliasName: dvst-ai-agent-alias-${sls:stage}
         Description: "Alias for the AI Agent"
         RoutingConfiguration:
-          AgentVersion: DRAFT
+          - AgentVersion: DRAFT
