@@ -1,5 +1,5 @@
 from langchain_tavily import TavilySearch
-import os
+import os, json
 def handler(event, context):
     """
     Lambda function handler to process search requests.
@@ -21,8 +21,15 @@ def handler(event, context):
         )
         results = search.invoke({'query': event.get('inputText', 'default search query')})
         return {
-            "statusCode": 200,
-            "body": results
+            "output" : {
+                "message" : {
+                    "content" : [
+                        {
+                            "text" : json.dumps(results)
+                        }
+                    ]
+                }
+            }
         }
     except Exception as e:
         print(f"Error processing event: {str(e)}")
