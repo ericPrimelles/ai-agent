@@ -19,7 +19,7 @@ def handler(event, context):
             topic="general",
 
         )
-        results = search.invoke({'query': event.get('query', 'default search query')})
+        results = search.invoke({'query': event.get('inputText', 'default search query')})
         return {
             "statusCode": 200,
             "body": results
