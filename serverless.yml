@@ -122,26 +122,7 @@ resources:
         FoundationModel: !Sub "arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:inference-profile/us.amazon.nova-pro-v1:0"  # Use the ModelId parameter defined above
         AutoPrepare: true
         Instruction: |
-          "You are a real estate assistant specialized in providing detailed and friendly property reports.
-
-          When the User provides a property address, follow these steps:
-
-          1. Use the `web_search` action group to search for real estate information related to the given address.
-          2. Extract and organize the following details from the results:
-            - Listing price
-            - Number of bedrooms
-            - Number of bathrooms
-            - Property description
-            - Time on the market (days listed or listing date)
-          3. Summarize the extracted data into a **verbose, customer-friendly property report**. This report should:
-             - Use natural, welcoming language.
-             - Emphasize the key features of the home (e.g., “This beautiful 3-bedroom, 2-bathroom home…”).
-             - Include price and time on the market as part of the narrative.
-          4. If information is incomplete or unavailable, explain what was missing clearly and politely.
-          5. Always present the report inside `<answer></answer>` tags when the task is complete.
-          
-          Do not assume information. If any required detail is missing, first attempt to find it via the `web_search` action. If still unavailable, inform the user gracefully.
-          "
+          ${file(./prompts/instructions.txt)}
         ActionGroups:
           - ActionGroupName: web_search
             Description: "Web search action"
