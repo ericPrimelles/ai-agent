@@ -137,7 +137,12 @@ resources:
                       Type: string
                       Description: "Search query for the web search"
                       Required: true
-    
+        MemoryConfiguration:
+          EnabledMemoryTypes:
+            - SESSION_SUMMARY
+          SessionSummaryConfiguration:
+            MaxRecentSessions: 5
+          StorageDays: 30
     AiDvstAgentAlias:
       Type: AWS::Bedrock::AgentAlias
       Properties:
