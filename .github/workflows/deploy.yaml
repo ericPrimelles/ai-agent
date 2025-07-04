@@ -48,7 +48,7 @@ jobs:
 
                 ########Building&Deploying docker image#########
                 cd src/scrapper_lambda
-                docker build-t scrapper-lambda .
+                docker build -t scrapper-lambda .
                 docker tag scrapper-lambda:latest $ECR_URI:latest
                 docker push $ECR_URI:latest
                 cd ../..
