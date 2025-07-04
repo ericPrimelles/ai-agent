@@ -46,8 +46,8 @@ functions:
 
   scrapper:
     name: dvst-ai-agent-scrapper-lambda-${sls:stage}
-    image: ${env:ECR_URI}/dvst-knwldge-ecr-${sls:stage}:latest
-    
+    image: ${env:ECR_URI}:latest
+
 resources:
   Parameters:
     ModelId:
