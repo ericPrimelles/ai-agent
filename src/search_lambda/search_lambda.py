@@ -20,16 +20,18 @@ def handler(event, context):
 
         )
         results = search.invoke({'query': event.get('inputText', 'default search query')})
+        actionId = event.get('actionId', None)
         return {
-            "output" : {
-                "message" : {
-                    "content" : [
-                        {
-                            "text" : json.dumps(results)
-                        }
-                    ]
-                }
-            }
+            "messageVersion": "1.0",
+            "response": {
+                
+                "actionResults" : [
+                    {
+                        "actionId": actionId,
+                        "output": json.dumps(results),
+                    }
+                ]
+            },
         }
     except Exception as e:
         print(f"Error processing event: {str(e)}")
