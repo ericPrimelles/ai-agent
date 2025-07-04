@@ -20,16 +20,23 @@ def handler(event, context):
 
         )
         results = search.invoke({'query': event.get('inputText', 'default search query')})
-        actionGroup = event.get('actionId', None)
+        actionGroup = event.get('actionGroup', None)
+        fnc = event.get('function', None)
+        print(event)
+        print(actionGroup)
+        print(results)
         return {
             "messageVersion": "1.0",
             "response": {
                 "actionGroup" : actionGroup,
-                
+                "function" : fnc,                
                 "functionResponse" : {
-                    "application/json" : {
-                        "responseBody" : json.dumps(results),
-                    }
+                   
+                   "responseBody" : {
+                      "TEXT": {
+                         "body": json.dumps(results)
+                      }
+                   }
                 }
             }
         }
