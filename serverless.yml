@@ -44,6 +44,10 @@ functions:
     environment:
       TAVILY_API_KEY: ${env:TAVILY_API_KEY}  # Ensure this is set in your environment or secrets
 
+  scrapper:
+    name: dvst-ai-agent-scrapper-lambda-${sls:stage}
+    image: ${env:ECR_URI}/dvst-knwldge-ecr-${sls:stage}:latest
+    
 resources:
   Parameters:
     ModelId:
