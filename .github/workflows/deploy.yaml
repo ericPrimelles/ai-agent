@@ -45,6 +45,14 @@ jobs:
                     --stack-name dvst-knwledge-ecr \
                     --query "Stacks[0].Outputs[?OutputKey=='AiDvstKnwlgeECRepUri'].OutputValue" \
                     --output text)
+
+                ########Building&Deploying docker image#########
+                cd src/scrapper_lambda
+                docker build-t scrapper-lambda .
+                docker tag scrapper-lambda:latest $ECR_URI:latest
+                docker push $ECR_URI:latest
+                cd ../..
+                ##############END################################
                 cd src
                 chmod +x package_lambdas.sh
                 ./package_lambdas.sh
