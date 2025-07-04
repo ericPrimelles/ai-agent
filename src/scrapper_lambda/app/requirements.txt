@@ -1,5 +1,4 @@
 robotexclusionrulesparser
 bs4
 requests
-urllib
 playwright
