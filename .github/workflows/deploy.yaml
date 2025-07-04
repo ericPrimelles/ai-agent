@@ -49,6 +49,9 @@ jobs:
                 ########Building&Deploying docker image#########
                 cd src/scrapper_lambda
                 docker build -t scrapper-lambda .
+                aws ecr get-login-password --region us-east-1 \
+                  | docker login --username AWS --password-stdin $ECR_URI
+
                 docker tag scrapper-lambda:latest $ECR_URI:latest
                 docker push $ECR_URI:latest
                 cd ../..
