@@ -32,5 +32,5 @@ ADD https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/latest
 RUN chmod +x /usr/local/bin/aws-lambda-rie
 
 # Use Python 3 binary from system
-ENTRYPOINT [ENTRYPOINT [ "python3", "-m", "awslambdaric" ]]
+ENTRYPOINT [ "python3", "-m", "awslambdaric" ]
 CMD ["scrapper_lambda.handler"]
