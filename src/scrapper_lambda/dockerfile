@@ -25,7 +25,7 @@ COPY --from=builder ${FUNCTION_DIR} ${FUNCTION_DIR}
 # Install AWS Lambda Runtime Interface Client
 RUN pip install awslambdaric
 
-RUN python -m playwright install chromium
+RUN python -m playwright install firefox
 
 # Optional: Add RIE for local testing
 ADD https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/latest/download/aws-lambda-rie /usr/local/bin/aws-lambda-rie

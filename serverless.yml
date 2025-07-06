@@ -47,6 +47,8 @@ functions:
   scrapper:
     name: dvst-ai-agent-scrapper-lambda-${sls:stage}
     image: ${env:ECR_URI}:latest
+    memorySize: 512
+    timeout: 900
 
 resources:
   Parameters:
