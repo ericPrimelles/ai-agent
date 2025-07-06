@@ -55,7 +55,7 @@ def clean_html_content(html: str) -> str:
 
     return clean_text
 
-async def handler(event, context):
+async def lambda_routine(event, context):
     try:
         urls = event.get('urls', [])
         actionGroup = event.get('actionGroup', None)
@@ -64,12 +64,16 @@ async def handler(event, context):
         if not urls:
             return generate_bedrock_response(actionGroup, fnc, [])
         for url in urls:
-            if not is_allowed(url):
+            if not is_allowed(url) or 'zillow.com' in url or 'realtor.com' in url:
                 pass
             
             async with async_playwright() as p:
-                browser = await p.chromium(headless=True)
-                page = await browser.new_page()
+                browser = await p.chromium.launch(headless=True)
+                context = await browser.new_context(
+                user_agent="Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36",
+                viewport={"width": 1280, "height": 800}
+                )
+                page = await context.new_page()
                 await page.goto(url)
                 content = await page.content()
                 await browser.close()
@@ -78,3 +82,11 @@ async def handler(event, context):
         return generate_bedrock_response(actionGroup, fnc, responses)
     except Exception as e:
         print(f"Error: {e}")
+        return {
+            "Error" : e
+        }
+
+
+import asyncio
+def handler(event, context):
+    return asyncio.run(lambda_routine(event, context))

@@ -1,40 +1,36 @@
-# ---- Stage 1: Builder ----
-FROM python:3.11-slim AS builder
+ARG FUNCTION_DIR="/app"
 
-# Install system dependencies
-RUN apt-get update && apt-get install -y \
-    curl unzip wget gnupg \
-    fonts-liberation \
-    libasound2 libatk-bridge2.0-0 libatk1.0-0 libcups2 \
-    libdbus-1-3 libdrm2 libgtk-3-0 libnspr4 libnss3 \
-    libx11-xcb1 libxcomposite1 libxdamage1 libxrandr2 \
-    xdg-utils libxss1 libxtst6 libgbm-dev libxshmfence-dev \
-    --no-install-recommends \
-    && apt-get clean && rm -rf /var/lib/apt/lists/*
+# --- Stage 1: Use Playwright image ---
+FROM mcr.microsoft.com/playwright/python:v1.44.0-focal AS builder
 
-WORKDIR /app
+ARG FUNCTION_DIR
+RUN mkdir -p ${FUNCTION_DIR}
+WORKDIR ${FUNCTION_DIR}
 
-# Copy and install dependencies
+# Copy app and install dependencies
 COPY app/requirements.txt .
-RUN pip install --upgrade pip
-RUN pip install --no-cache-dir -r requirements.txt
+COPY app/ ${FUNCTION_DIR}
 
-# Install Playwright and browsers
+RUN pip install --upgrade pip && \
+    pip install --target ${FUNCTION_DIR} -r requirements.txt
+
+# --- Stage 2: Final Lambda Image ---
+FROM mcr.microsoft.com/playwright/python:v1.44.0-focal
+
+ARG FUNCTION_DIR
+WORKDIR ${FUNCTION_DIR}
+
+COPY --from=builder ${FUNCTION_DIR} ${FUNCTION_DIR}
+
+# Install AWS Lambda Runtime Interface Client
+RUN pip install awslambdaric
+
 RUN python -m playwright install chromium
 
-# Copy full app
-COPY app/ .
-
-# ---- Stage 2: Final Lambda-compatible image ----
-FROM public.ecr.aws/lambda/python:3.11 as final
-
-# Add Lambda Runtime Interface Emulator (optional for local testing)
+# Optional: Add RIE for local testing
 ADD https://github.com/aws/aws-lambda-runtime-interface-emulator/releases/latest/download/aws-lambda-rie /usr/local/bin/aws-lambda-rie
 RUN chmod +x /usr/local/bin/aws-lambda-rie
 
-# Copy built app from builder stage
-COPY --from=builder /app /var/task
-
-# Define Lambda entrypoint and handler
-ENTRYPOINT [ "/usr/local/bin/aws-lambda-rie", "python", "-m", "awslambdaric" ]
-CMD [ "scrapper_lambda.handler" ]
+# Use Python 3 binary from system
+ENTRYPOINT ["/usr/local/bin/aws-lambda-rie", "python3", "-m", "awslambdaric"]
+CMD ["scrapper_lambda.handler"]
