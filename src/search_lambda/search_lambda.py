@@ -1,5 +1,22 @@
 from langchain_tavily import TavilySearch
 import os, json
+
+
+def scrapper(event, context):
+    try:
+        print(event)
+        url = os.getenv('ALB_DNS')
+        urls = event.get('urls')
+        body = {"urls" : urls}
+        result = requests.post(f'http://{url}/scrapper', json=body)
+        return result.json()
+    except Exception as e:
+        print(f"Error processing event: {str(e)}")
+        return {
+            "statusCode": 500,
+            "body": f"An error occurred: {str(e)}"
+        }
+    
 def handler(event, context):
     """
     Lambda function handler to process search requests.
@@ -25,6 +42,15 @@ def handler(event, context):
         print(event)
         print(actionGroup)
         print(results)
+        data = results.get('results', [])
+        urls = [d.get('url') for d in data if d.get('url') ]
+        enrichment = scrapper(urls)
+
+        final_result = {
+            'images' : results.get('images', []),
+            'search_result' : results.get('results', []),
+            'enriched_data' : enrichment
+            }
         return {
             "messageVersion": "1.0",
             "response": {
@@ -34,7 +60,7 @@ def handler(event, context):
                    
                    "responseBody" : {
                       "TEXT": {
-                         "body": json.dumps(results)
+                         "body": json.dumps(final_result)
                       }
                    }
                 }
