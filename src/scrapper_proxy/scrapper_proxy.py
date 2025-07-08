@@ -5,7 +5,8 @@ def handler(event, context):
         print(event)
         url = os.getenv('ALB_DNS')
         urls = event.get('urls')
-        result = requests.post(url, json=urls)
+        body = {"urls" : urls}
+        result = requests.post(f'http://{url}/scrapper', json=body)
         return result.json()
     except Exception as e:
         print(f"Error processing event: {str(e)}")

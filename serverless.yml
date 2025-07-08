@@ -147,6 +147,20 @@ resources:
                       Type: string
                       Description: "Search query for the web search"
                       Required: true
+          - ActionGroupName: scrapper
+            Description: "Web Scrapper to context enrichment"
+            ActionGroupExecutor:
+              Lambda: !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-scrapper-proxy-lambda-${sls:stage}"
+            FunctionSchema:
+              Functions:
+                - Name: scrapper
+                  Description: "Proxy to hosted web scrapper"
+                  Parameters:
+                    urls:
+                      Type: array
+                      Description: "URLs to scrap"
+                      Required: true
+
         MemoryConfiguration:
           EnabledMemoryTypes:
             - SESSION_SUMMARY
