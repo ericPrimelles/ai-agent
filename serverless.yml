@@ -45,7 +45,7 @@ functions:
       TAVILY_API_KEY: ${env:TAVILY_API_KEY}  # Ensure this is set in your environment or secrets
 
   scrapper:
-    name: dvst-ai-agent-scrapper-lambda-${sls:stage}
+    name: dvst-ai-agent-scrapper-proxy-lambda-${sls:stage}
     handler: scrapper_proxy.handler
     package:
       artifact: src/dist/scrapper_proxy.zip
