@@ -49,6 +49,7 @@ functions:
     handler: scrapper_proxy.handler
     package:
       artifact: src/dist/scrapper_proxy.zip
+    timeout: 60
    
 
 resources:

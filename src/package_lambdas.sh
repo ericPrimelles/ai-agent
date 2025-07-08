@@ -29,3 +29,4 @@ function package_lambda() {
 }
 
 package_lambda search_lambda
+package_lambda scrapper_proxy

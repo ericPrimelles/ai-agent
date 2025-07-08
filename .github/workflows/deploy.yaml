@@ -41,21 +41,12 @@ jobs:
                 export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY }}
                 export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
                 export AWS_REGION=${{ env.AWS_REGION }}
-                export ECR_URI=$(aws cloudformation describe-stacks \
-                    --stack-name dvst-knwledge-ecr \
-                    --query "Stacks[0].Outputs[?OutputKey=='AiDvstKnwlgeECRepUri'].OutputValue" \
+                export ALB_DNS=$(aws cloudformation describe-stacks \
+                    --stack-name dvst-knwledge-scrapper \
+                    --query "Stacks[0].Outputs[?OutputKey=='AlbDns'].OutputValue" \
                     --output text)
 
-                ########Building&Deploying docker image#########
-                cd src/scrapper_lambda
-                docker build -t scrapper-lambda .
-                aws ecr get-login-password --region us-east-1 \
-                  | docker login --username AWS --password-stdin $ECR_URI
-
-                docker tag scrapper-lambda:latest $ECR_URI:latest
-                docker push $ECR_URI:latest
-                cd ../..
-                ##############END################################
+                
                 cd src
                 chmod +x package_lambdas.sh
                 ./package_lambdas.sh
