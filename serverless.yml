@@ -46,9 +46,10 @@ functions:
 
   scrapper:
     name: dvst-ai-agent-scrapper-lambda-${sls:stage}
-    image: ${env:ECR_URI}:latest
-    memorySize: 512
-    timeout: 900
+    handler: scrapper_proxy.handler
+    package:
+      artifact: src/dist/scrapper_proxy.zip
+   
 
 resources:
   Parameters:
