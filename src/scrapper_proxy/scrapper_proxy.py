@@ -2,7 +2,8 @@ import requests, os
 
 def handler(event, context):
     try:
-        url = os.env.get('ALB_DNS')
+        print(event)
+        url = os.getenv('ALB_DNS')
         urls = event.get('urls')
         result = requests.post(url, json=urls)
         return result.json()

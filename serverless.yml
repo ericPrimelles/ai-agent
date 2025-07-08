@@ -50,6 +50,8 @@ functions:
     package:
       artifact: src/dist/scrapper_proxy.zip
     timeout: 60
+    environment:
+      ALB_DNS: ${env:ALB_DNS}
    
 
 resources:
