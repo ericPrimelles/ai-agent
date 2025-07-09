@@ -80,42 +80,7 @@ resources:
                     #- !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}"
                     #- !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}:$LATEST"
     
-          # - PolicyName: Bedrock
-          #   PolicyDocument:
-          #     Version: '2012-10-17'
-          #     Statement:
-          #       - Effect: Allow
-          #         Action:
-          #           - "bedrock:InvokeAgent"
-          #           - "bedrock:ListAgents"
-          #           - "bedrock:GetAgent"
-          #           - "bedrock:GetAgentActionGroup"
-          #           - "bedrock:ListAgentActionGroups"
-          #           - "bedrock:InvokeAgentWithResponseStream"
-          #           - "bedrock:CreateAgent"
-          #           - "bedrock:UpdateAgent"
-          #           - "bedrock:DeleteAgent"
-          #           - "bedrock:GetAgent"
-          #           - "bedrock:ListAgents"
-          #           - "bedrock:CreateAgentVersion"
-          #           - "bedrock:CreateAgentAlias"
-          #           - "bedrock:UpdateAgentAlias"
-          #           - "bedrock:GetInferenceProfile"
-          #           - "bedrock:ListInferenceProfiles"
-          #           - "bedrock:UseInferenceProfile"
-                    
-          #         Resource: "*"
-          # - PolicyName: NovaModelAccess
-          #   PolicyDocument:
-          #     Version: '2012-10-17'
-          #     Statement:
-          #       - Effect: Allow
-          #         Action:
-          #           - "bedrock:InvokeModel"
-          #           - "bedrock:ListFoundationModels"
-          #         Resource: 
-          #           #- !Sub "arn:aws:bedrock:${AWS::Region}::foundation-model/${ModelId}"  # Use the ModelId parameter defined above
-          #           - !Sub "arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:inference-profile/*" #us.amazon.nova-pro-v1:0
+          
 
     AiDvstAgent:
       Type: AWS::Bedrock::Agent
@@ -172,7 +137,7 @@ resources:
         SourceArn: !Sub "arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:agent/*"
     
     AiDvstAgentIdParameter:
-      Type: AWS::SSM:Parameter
+      Type: AWS::SSM::Parameter
       Properties:
         Name: /dvst-ai-agent/${sls:stage}/agent-id
         Type: String
@@ -180,7 +145,7 @@ resources:
         Description: "Stores the Bedrock Agent ID for the current stage"
     
     AiDvstAgentAliasParameter:
-      Type: AWS::SSM:Parameter
+      Type: AWS::SSM::Parameter
       Properties:
         Name: /dvst-ai-agent/${sls:stage}/agent-alias
         Type: String
