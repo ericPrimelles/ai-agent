@@ -1,5 +1,5 @@
 from langchain_tavily import TavilySearch
-import os, json
+import os, json, requests
 
 
 def scrapper(event, context):
@@ -50,7 +50,7 @@ def handler(event, context):
         print(results)
         data = results.get('results', [])
         urls = [d.get('url') for d in data if d.get('url') ]
-        enrichment = scrapper(urls)
+        enrichment = scrapper(urls, {})
 
         final_result = {
             'images' : results.get('images', []),
