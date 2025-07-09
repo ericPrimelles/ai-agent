@@ -50,7 +50,7 @@ def handler(event, context):
         print(results)
         data = results.get('results', [])
         urls = [d.get('url') for d in data if d.get('url') ]
-        enrichment = scrapper({'urls': urls}, {})
+        #enrichment = scrapper({'urls': urls}, {})
 
         final_result = {
             'images' : results.get('images', []),
