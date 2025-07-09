@@ -16,7 +16,13 @@ def scrapper(event, context):
             "statusCode": 500,
             "body": f"An error occurred: {str(e)}"
         }
-    
+
+def get_query(event):
+    parameters = event.get('parameters', [])
+    for p in parameters:
+        if p['Name'] == 'query':
+            return p['Value'] 
+        
 def handler(event, context):
     """
     Lambda function handler to process search requests.
@@ -36,7 +42,7 @@ def handler(event, context):
             topic="general",
 
         )
-        results = search.invoke({'query': event.get('inputText', 'default search query')})
+        results = search.invoke({'query': get_query(event)})
         actionGroup = event.get('actionGroup', None)
         fnc = event.get('function', None)
         print(event)
