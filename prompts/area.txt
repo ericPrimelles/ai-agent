@@ -1,0 +1,95 @@
+COMMAND: `area: [zipcode, city]`  
+→ SECTION 3: Area & Neighborhood Information
+
+- Use the provided ZIP code and city to retrieve factual local context.
+- You may issue multiple `web_search(query=...)` calls to complete missing or detailed information.
+- Use only **verifiable and recent sources**. Do **not** interpret or generalize any statistics, especially those related to race, age, crime, or income.
+- Present the output in a clean bullet list grouped under the following headings:
+
+---
+
+`Demographics:`  
+- Total Population  
+- Population Density (per sq mi/km)  
+- Age Distribution (e.g., under 18, 18–34, 35–64, 65+)  
+- Racial Composition (percentages only)  
+- Household Income Brackets (e.g., % earning under $50K, $50K–$100K, etc.)
+
+---
+
+`School Ratings:`  
+- For each notable public school (within approx. 5 miles):  
+  - Type (Elementary, Middle, High)  
+  - Name  
+  - Distance from ZIP code center  
+  - Rating or grade (if available)
+
+---
+
+`Crime Rate:`  
+- Crime Score or Index (numerical if available)  
+- Relative Comparison: Higher / Average / Lower than state or national average  
+- Source must be cited if provided in the result
+
+---
+
+`Walkability:`  
+- Walk Score (0–100)  
+- Optionally include Transit Score and Bike Score if available
+
+---
+
+`Points of Interest:`  
+- Categorize by type:  
+  - Grocery Stores / Markets  
+  - Restaurants / Cafes  
+  - Parks / Green Spaces  
+  - Shopping Centers / Malls  
+  - Hospitals / Clinics  
+- Include 2–3 examples per category, if available
+
+---
+
+EXAMPLE OUTPUT:
+
+- Demographics:  
+  - Population: 38,451  
+  - Density: 3,215 per sq mi  
+  - Age: 22% under 18, 58% 18–64, 20% 65+  
+  - Race: 52% White, 28% Black, 12% Hispanic, 6% Other  
+  - Household Income: 18% <$50K, 42% $50K–$100K, 40% >$100K
+
+- School Ratings:  
+  - Elementary: Greenfield Elementary – 1.2 miles – Rating: A  
+  - Middle: Lakeshore Middle – 2.8 miles – Rating: B+  
+  - High: Oak Ridge High – 4.5 miles – Rating: B
+
+- Crime Rate:  
+  - Crime Index: 6.3/10  
+  - Crime rate slightly above state average
+
+- Walkability:  
+  - Walk Score: 57 (Somewhat Walkable)
+
+- Points of Interest:  
+  - Grocery: Publix, Aldi, Walmart Neighborhood Market  
+  - Parks: Riverside Park, Meadow Creek Trails  
+  - Shopping: Lakeside Mall, Target Plaza  
+  - Medical: St. Vincent's Medical Center, Family First Clinic
+
+---
+
+EXAMPLE SEARCH QUERIES TO RETRIEVE MISSING DATA:
+
+- web_search(query="Demographic breakdown for ZIP [zipcode], [city]")
+- web_search(query="Population and density of ZIP [zipcode] [city]")
+- web_search(query="Household income distribution ZIP [zipcode] [city]")
+- web_search(query="Public schools near ZIP [zipcode] with ratings")
+- web_search(query="Crime rate in ZIP [zipcode], [city]")
+- web_search(query="Walk score for ZIP [zipcode], [city]")
+- web_search(query="Best grocery stores near ZIP [zipcode], [city]")
+- web_search(query="Parks near ZIP [zipcode], [city]")
+- web_search(query="Shopping centers in ZIP [zipcode], [city]")
+- web_search(query="Hospitals or urgent care near ZIP [zipcode], [city]")
+
+(Replace `[zipcode]` and `[city]` with actual input.)

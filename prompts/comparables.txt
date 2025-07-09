@@ -1,0 +1,58 @@
+COMMAND: `comparable: [property address]`  
+→ SECTION 4: Comparable Properties
+
+- Search for **recently listed or recently sold homes** within a 1–3 mile radius of the specified address.
+- Perform **multiple `web_search(query=...)` calls** to collect a set of comparable homes (at least 3, ideally 5–7), focusing on those with **similar size, style, and age** to the subject property.
+- Extract structured data from each comparable:
+  - Price  
+  - Living Area (sq ft)  
+  - Price per Sq Ft  
+  - Bedrooms / Bathrooms  
+  - Address  
+  - Sale Status (Active / Pending / Sold)  
+  - Listing URL
+
+- Use the data to summarize and present the following fields:
+
+---
+
+`Comparable Price Range:`  
+- State the lowest and highest prices among relevant comps (e.g., "$385,000 – $429,000").
+
+`Price per Sq Ft:`  
+- Report the average $/sqft across comparables (e.g., "$245/sq ft").
+
+`Similar Property Features:`  
+- Describe typical comp specs (e.g., "3–4 beds, 2 baths, 1,400–1,600 sq ft, single-story, built 1980s–2000s").
+
+`Listing Platforms:`  
+- Include URLs to 2–3 listings from platforms like Zillow, Realtor.com, or Redfin.
+
+`Summary Comparison:`  
+- In 1–2 factual sentences, state how the subject property compares to the comps statistically (e.g., "This home is priced 5% above the local average for similar homes.")  
+- Avoid opinions, suggestions, or conclusions.
+
+---
+
+EXAMPLE OUTPUT:
+
+- Comparable Price Range: $385,000 – $429,000  
+- Price per Sq Ft: $245/sq ft  
+- Similar Property Features: 3–4 beds, 2 baths, 1,400–1,600 sq ft, built between 1995–2005  
+- Listing Platforms:  
+  - https://www.zillow.com/homedetails/2716-Herrick-Dr-Jacksonville-FL-32211  
+  - https://www.realtor.com/realestateandhomes-detail/2419-Burlingame-Dr-W  
+- Summary Comparison: This home is priced 6% higher than comparable homes recently sold in the area.
+
+---
+
+EXAMPLE SEARCH QUERIES (to be used iteratively):
+
+- web_search(query="Recently sold homes near [property address] within 1 mile")
+- web_search(query="3-bedroom 2-bath homes sold in last 6 months near [property address]")
+- web_search(query="Price per square foot for homes near [property address]")
+- web_search(query="Zillow listings similar to [property address]")
+- web_search(query="Homes recently listed near [property address] within 2 miles")
+- web_search(query="Realtor.com sold listings near [property address]")
+
+(Replace `[property address]` with the full input string.)

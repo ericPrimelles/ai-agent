@@ -127,6 +127,10 @@ resources:
         AutoPrepare: true
         Instruction: |
           ${file(./prompts/instructions.txt)}
+          ${file(./prompts/description.txt)}
+          ${file(./prompts/features.txt)}
+          ${file(./prompts/area.txt)}
+          ${file(./prompts/comparables.txt)}
         ActionGroups:
           - ActionGroupName: web_search
             Description: "Web search action"
