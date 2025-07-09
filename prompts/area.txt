@@ -1,16 +1,16 @@
-COMMAND: `area: [zipcode, city]`  
+COMMAND: `area: [property address]`  
 → SECTION 3: Area & Neighborhood Information
 
-- Use the provided ZIP code and city to retrieve factual local context.
-- You may issue multiple `web_search(query=...)` calls to complete missing or detailed information.
-- Use only **verifiable and recent sources**. Do **not** interpret or generalize any statistics, especially those related to race, age, crime, or income.
-- Present the output in a clean bullet list grouped under the following headings:
+- Use the full property address to retrieve precise area context.
+- You may issue **multiple `web_search(query=...)` calls** to gather data specific to the address.
+- Use only **verifiable and recent sources**. Do **not** interpret, generalize, or explain sensitive information (demographics, crime, income).
+- Present the output in a structured bullet list using the following categories:
 
 ---
 
 `Demographics:`  
 - Total Population  
-- Population Density (per sq mi/km)  
+- Population Density (per sq mi or km²)  
 - Age Distribution (e.g., under 18, 18–34, 35–64, 65+)  
 - Racial Composition (percentages only)  
 - Household Income Brackets (e.g., % earning under $50K, $50K–$100K, etc.)
@@ -18,78 +18,78 @@ COMMAND: `area: [zipcode, city]`
 ---
 
 `School Ratings:`  
-- For each notable public school (within approx. 5 miles):  
-  - Type (Elementary, Middle, High)  
-  - Name  
-  - Distance from ZIP code center  
-  - Rating or grade (if available)
+- List only **public schools officially assigned to the address**  
+- For each school, include:
+  - `Type:` (Elementary, Middle, High)  
+  - `Name:`  
+  - `Distance:` (in miles from the address)  
+  - `Quality:` (rating or grade if available)
 
 ---
 
 `Crime Rate:`  
-- Crime Score or Index (numerical if available)  
-- Relative Comparison: Higher / Average / Lower than state or national average  
-- Source must be cited if provided in the result
+- Numerical score or index if available  
+- Qualitative position (e.g., Above / Below / Average compared to state/national benchmarks)  
+- Include source reference if mentioned in search result
 
 ---
 
 `Walkability:`  
-- Walk Score (0–100)  
+- Walk Score (0–100) associated with the full address  
 - Optionally include Transit Score and Bike Score if available
 
 ---
 
 `Points of Interest:`  
-- Categorize by type:  
+- Include amenities **geographically relevant to the property**, regardless of city or ZIP boundaries  
+- Categorize results clearly:
   - Grocery Stores / Markets  
-  - Restaurants / Cafes  
   - Parks / Green Spaces  
+  - Restaurants / Cafes  
   - Shopping Centers / Malls  
   - Hospitals / Clinics  
-- Include 2–3 examples per category, if available
+- List 2–3 named examples per category, with name and distance if available
 
 ---
 
 EXAMPLE OUTPUT:
 
 - Demographics:  
-  - Population: 38,451  
-  - Density: 3,215 per sq mi  
-  - Age: 22% under 18, 58% 18–64, 20% 65+  
-  - Race: 52% White, 28% Black, 12% Hispanic, 6% Other  
-  - Household Income: 18% <$50K, 42% $50K–$100K, 40% >$100K
+  - Population: 41,820  
+  - Density: 2,980 per sq mi  
+  - Age: 21% under 18, 60% 18–64, 19% 65+  
+  - Race: 60% White, 22% Black, 10% Hispanic, 8% Other  
+  - Household Income: 15% <$50K, 55% $50K–$100K, 30% >$100K
 
 - School Ratings:  
-  - Elementary: Greenfield Elementary – 1.2 miles – Rating: A  
-  - Middle: Lakeshore Middle – 2.8 miles – Rating: B+  
-  - High: Oak Ridge High – 4.5 miles – Rating: B
+  - Elementary: Arlingwood Elementary – 0.7 mi – Quality: B+  
+  - Middle: Arlington Middle – 1.4 mi – Quality: B  
+  - High: Terry Parker High – 2.3 mi – Quality: B
 
 - Crime Rate:  
-  - Crime Index: 6.3/10  
-  - Crime rate slightly above state average
+  - Index: 5.1/10  
+  - Slightly higher than state average (source: NeighborhoodScout)
 
 - Walkability:  
-  - Walk Score: 57 (Somewhat Walkable)
+  - Walk Score: 54  
+  - Transit Score: 41  
+  - Bike Score: 56
 
 - Points of Interest:  
-  - Grocery: Publix, Aldi, Walmart Neighborhood Market  
-  - Parks: Riverside Park, Meadow Creek Trails  
-  - Shopping: Lakeside Mall, Target Plaza  
-  - Medical: St. Vincent's Medical Center, Family First Clinic
+  - Grocery: Publix (1.2 mi), Save-A-Lot (0.9 mi), Winn-Dixie (1.5 mi)  
+  - Parks: Tree Hill Nature Center, Bruce Park  
+  - Shopping: Regency Square Mall, Arlington Plaza  
+  - Medical: UF Health Jacksonville (4.2 mi), Arlington Family Clinic (1.9 mi)
 
 ---
 
-EXAMPLE SEARCH QUERIES TO RETRIEVE MISSING DATA:
+EXAMPLE SEARCH QUERIES:
 
-- web_search(query="Demographic breakdown for ZIP [zipcode], [city]")
-- web_search(query="Population and density of ZIP [zipcode] [city]")
-- web_search(query="Household income distribution ZIP [zipcode] [city]")
-- web_search(query="Public schools near ZIP [zipcode] with ratings")
-- web_search(query="Crime rate in ZIP [zipcode], [city]")
-- web_search(query="Walk score for ZIP [zipcode], [city]")
-- web_search(query="Best grocery stores near ZIP [zipcode], [city]")
-- web_search(query="Parks near ZIP [zipcode], [city]")
-- web_search(query="Shopping centers in ZIP [zipcode], [city]")
-- web_search(query="Hospitals or urgent care near ZIP [zipcode], [city]")
+- web_search(query="Demographic profile of [property address]")
+- web_search(query="Public schools assigned to [property address]")
+- web_search(query="Crime rate around [property address]")
+- web_search(query="Walk score for [property address]")
+- web_search(query="Points of interest near [property address]")
+- web_search(query="Hospitals and shopping centers near [property address]")
 
-(Replace `[zipcode]` and `[city]` with actual input.)
+(Replace `[property address]` with the full address string.)
