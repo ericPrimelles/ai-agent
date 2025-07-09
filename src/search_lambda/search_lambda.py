@@ -20,8 +20,8 @@ def scrapper(event, context):
 def get_query(event):
     parameters = event.get('parameters', [])
     for p in parameters:
-        if p['Name'] == 'query':
-            return p['Value'] 
+        if p['name'] == 'query':
+            return p['value'] 
         
 def handler(event, context):
     """
