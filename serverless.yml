@@ -170,3 +170,21 @@ resources:
         FunctionName: !Sub "dvst-ai-agent-search-lambda-${sls:stage}"
         Principal: bedrock.amazonaws.com
         SourceArn: !Sub "arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:agent/*"
+    
+    AiDvstAgentIdParameter:
+      Type: AWS::SSM:Parameter
+      Properties:
+        Name: /dvst-ai-agent/${sls:stage}/agent-id
+        Type: String
+        Value: !Ref AiDvstAgent
+        Description: "Stores the Bedrock Agent ID for the current stage"
+    
+    AiDvstAgentAliasParameter:
+      Type: AWS::SSM:Parameter
+      Properties:
+        Name: /dvst-ai-agent/${sls:stage}/agent-alias
+        Type: String
+        Value: !Ref AiDvstAgentAlias
+        Description: "Stores the Bedrock Agent ID for the current stage"
+    
+    
