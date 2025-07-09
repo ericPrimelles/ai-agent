@@ -55,7 +55,7 @@ def handler(event, context):
         final_result = {
             'images' : results.get('images', []),
             'search_result' : results.get('results', []),
-            'enriched_data' : enrichment
+            #'enriched_data' : enrichment
             }
         return {
             "messageVersion": "1.0",
