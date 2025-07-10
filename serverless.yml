@@ -160,7 +160,7 @@ resources:
           Statement:
             - Effect: Allow
               Principal:
-                AWS: "arn:aws:iam:503698125259:root"
+                AWS: "arn:aws:iam::503698125259:root"
               Action: sts:AssumeRole
         Policies:
           - PolicyName: BedrockInvokation
