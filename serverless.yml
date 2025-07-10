@@ -172,7 +172,7 @@ resources:
                     - "bedrock:InvokeAgent"
                   Resource: "*"
       
-    AiDvstAgentAliasParameter:
+    CrossAccountArnParameter:
       Type: AWS::SSM::Parameter
       Properties:
         Name: /dvst-ai-agent/${sls:stage}/cross-account-role-arn
