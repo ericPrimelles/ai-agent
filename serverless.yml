@@ -151,5 +151,32 @@ resources:
         Type: String
         Value: !GetAtt AiDvstAgentAlias.AgentAliasId
         Description: "Stores the Bedrock Agent ID for the current stage"
-    
+
+    CrossAccountInvokationRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                AWS: "arn:aws:iam:503698125259:*"
+              Action: sts:AssumeRole
+        Policies:
+          - PolicyName: BedrockInvokation
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Sid: Bedrock
+                  Action:
+                    - "bedrock:InvokeAgent"
+                  Resource: "*"
+      
+      AiDvstAgentAliasParameter:
+      Type: AWS::SSM::Parameter
+      Properties:
+        Name: /dvst-ai-agent/${sls:stage}/cross-account-role-arn
+        Type: String
+        Value: !GetAtt CrossAccountInvokationRole.Arn
+        Description: "Stores the Bedrock Agent ID for the current stage"
     
