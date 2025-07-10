@@ -149,7 +149,7 @@ resources:
       Properties:
         Name: /dvst-ai-agent/${sls:stage}/agent-alias
         Type: String
-        Value: !Ref AiDvstAgentAlias
+        Value: !GetAtt AiDvstAgentAlias.AgentAliasId
         Description: "Stores the Bedrock Agent ID for the current stage"
     
     
