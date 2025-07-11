@@ -58,7 +58,10 @@ jobs:
                 npm install serverless-appsync-plugin ---debug
                 sls package --stage $STAGE --region $AWS_REGION
                 sls deploy --stage $STAGE --region $AWS_REGION
-
+                
+                export AGENT_ID=$(aws ssm get-parameter --name /dvst-ai-agent/dev/agent-id --query Parameter.Value --output text)
+                export AGENT_ALIAS_ID=$(aws ssm get-parameter --name /dvst-ai-agent/$STAGE/agent-alias --query Parameter.Value --output text)
+                
                 export AGENT_VERSION=$(aws bedrock-agent publish-agent-version \
                   --agent-id $AGENT_ID \
                   --description "Auto-publish on $(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
