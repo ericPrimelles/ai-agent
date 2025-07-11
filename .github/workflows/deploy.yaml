@@ -62,16 +62,16 @@ jobs:
                 export AGENT_ID=$(aws ssm get-parameter --name /dvst-ai-agent/dev/agent-id --query Parameter.Value --output text)
                 export AGENT_ALIAS_ID=$(aws ssm get-parameter --name /dvst-ai-agent/$STAGE/agent-alias --query Parameter.Value --output text)
                 
-                export AGENT_VERSION=$(aws bedrock-agent publish-agent-version \
-                  --agent-id $AGENT_ID \
-                  --description "Auto-publish on $(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
-                  --region $AWS_REGION \
-                  --query 'agentVersion' \
-                  --output text)
+                # export AGENT_VERSION=$(aws bedrock-agent publish-agent-version \
+                #   --agent-id $AGENT_ID \
+                #   --description "Auto-publish on $(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
+                #   --region $AWS_REGION \
+                #   --query 'agentVersion' \
+                #   --output text)
                 
                 aws bedrock-agent update-agent-alias \
                   --agent-id $AGENT_ID \
                   --agent-alias-id $AGENT_ALIAS_ID \
-                  --agent-version "$AGENT_VERSION" \
+                  --agent-alias-name dvst-ai-agent-alias-$STAGE \
                   --region $AWS_REGION
 
