@@ -152,6 +152,19 @@ resources:
         Value: !GetAtt AiDvstAgentAlias.AgentAliasId
         Description: "Stores the Bedrock Agent ID for the current stage"
 
+    AiDvstServiceBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: !Sub "dvst-ai-agent-${sls:stage}-bucket"
+        VersioningConfiguration:
+          Status: Enabled
+        LifecycleConfiguration:
+          Rules:
+            - Id: "ExpireOldVersions"
+              Status: Enabled
+              NoncurrentVersionExpirationInDays: 30
+        AccessControl: Private
+        
     CrossAccountInvokationRole:
       Type: AWS::IAM::Role
       Properties:
