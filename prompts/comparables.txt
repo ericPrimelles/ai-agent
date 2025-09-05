@@ -1,58 +1,82 @@
-COMMAND: `comparable: [property address]`  
-→ SECTION 4: Comparable Properties
+## COMMAND: `comparable: [property address]`  
 
-- Search for **recently listed or recently sold homes** within a 1–3 mile radius of the specified address.
-- Perform **multiple `web_search(query=...)` calls** to collect a set of comparable homes (at least 3, ideally 5–7), focusing on those with **similar size, style, and age** to the subject property.
-- Extract structured data from each comparable:
-  - Price  
-  - Living Area (sq ft)  
-  - Price per Sq Ft  
-  - Bedrooms / Bathrooms  
-  - Address  
-  - Sale Status (Active / Pending / Sold)  
-  - Listing URL
+### Process  
 
-- Use the data to summarize and present the following fields:
+- Search for **recently listed or sold homes within 0.5–1 mile radius** of the target property.  
+- Ensure comparables are in the **same school district** and consider **rivers, highways, or train tracks** that may influence values.  
+- Prefer homes sold in the **last 3–6 months** (12 months if the market is very stable).  
+- Collect as many of the following attributes as possible for each comparable.  
 
----
+### Comparable Fields  
 
-`Comparable Price Range:`  
-- State the lowest and highest prices among relevant comps (e.g., "$385,000 – $429,000").
-
-`Price per Sq Ft:`  
-- Report the average $/sqft across comparables (e.g., "$245/sq ft").
-
-`Similar Property Features:`  
-- Describe typical comp specs (e.g., "3–4 beds, 2 baths, 1,400–1,600 sq ft, single-story, built 1980s–2000s").
-
-`Listing Platforms:`  
-- Include URLs to 2–3 listings from platforms like Zillow, Realtor.com, or Redfin.
-
-`Summary Comparison:`  
-- In 1–2 factual sentences, state how the subject property compares to the comps statistically (e.g., "This home is priced 5% above the local average for similar homes.")  
-- Avoid opinions, suggestions, or conclusions.
+- Address  
+- Listing Status (Active / Pending / Sold)  
+- Listing Price  
+- Closing Price (if sold)  
+- Living Area (sq ft)  
+- $/Sq Ft  
+- Bedrooms  
+- Bathrooms  
+- Lot Size (sq ft or acres) and Shape (if available)  
+- Garage (size/type)  
+- Year Built  
+- Recent Renovations / Condition (e.g., remodeled, original, needs work)  
+- Finishes (floors, kitchen, bathrooms, windows, roof, HVAC)  
+- Style and Design (e.g., ranch, contemporary, colonial)  
+- Type of Construction (single-family, townhome, condo [include floor], multifamily [2–4 units])  
+- Days on Market  
+- Seller Motivation (regular sale, foreclosure, short sale)  
+- Listing URL  
 
 ---
 
-EXAMPLE OUTPUT:
+### Output Format  
 
-- Comparable Price Range: $385,000 – $429,000  
-- Price per Sq Ft: $245/sq ft  
-- Similar Property Features: 3–4 beds, 2 baths, 1,400–1,600 sq ft, built between 1995–2005  
-- Listing Platforms:  
-  - https://www.zillow.com/homedetails/2716-Herrick-Dr-Jacksonville-FL-32211  
-  - https://www.realtor.com/realestateandhomes-detail/2419-Burlingame-Dr-W  
-- Summary Comparison: This home is priced 6% higher than comparable homes recently sold in the area.
+For each comparable property, use a structured bullet list:
+
+**Comparable #1**  
+- Address:  
+- Status:  
+- Listing Price:  
+- Closing Price:  
+- Living Area:  
+- $/Sq Ft:  
+- Bedrooms:  
+- Bathrooms:  
+- Lot Size:  
+- Garage:  
+- Year Built:  
+- Renovations / Condition:  
+- Finishes:  
+- Style / Design:  
+- Construction Type:  
+- Days on Market:  
+- Seller Motivation:  
+- Listing URL:  
 
 ---
 
-EXAMPLE SEARCH QUERIES (to be used iteratively):
+### Summary Section  
 
-- web_search(query="Recently sold homes near [property address] within 1 mile")
-- web_search(query="3-bedroom 2-bath homes sold in last 6 months near [property address]")
-- web_search(query="Price per square foot for homes near [property address]")
-- web_search(query="Zillow listings similar to [property address]")
-- web_search(query="Homes recently listed near [property address] within 2 miles")
-- web_search(query="Realtor.com sold listings near [property address]")
+After listing at least 3 comparables, include:  
 
-(Replace `[property address]` with the full input string.)
+- Comparable Price Range: lowest – highest  
+- Average $/Sq Ft  
+- Typical Property Profile: summarize beds, baths, sqft, year built range  
+- Summary Comparison: 1–2 factual sentences on how the subject property compares statistically  
+
+---
+
+### Example Search Queries  
+
+- `web_search(query="Recently sold homes within 1 mile of [property address]")`  
+- `web_search(query="Homes sold last 6 months near [property address] same school district")`  
+- `web_search(query="Price per square foot homes near [property address]")`  
+- `web_search(query="Garage details for homes near [property address]")`  
+- `web_search(query="Renovations or condition of [property address] comparable homes")`  
+- `web_search(query="Days on market for homes near [property address]")`  
+- `web_search(query="Foreclosure or short sale homes near [property address]")`  
+
+---
+
+⚠️ Important: Continue issuing `web_search(query=...)` until most comparable fields are populated but not more than 10 times. If data cannot be found, omit the field. Never speculate.  
