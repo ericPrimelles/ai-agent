@@ -2,37 +2,9 @@ COMMAND: `features-basic: [property address]`
 → SECTION 2A: Core Property Information
 
 - Use `web_search(query=...)` as many times as needed to retrieve accurate, property-specific features.
-- You may run multiple searches to collect missing attributes (e.g., price, bedrooms, living area, etc.).
+- You may run multiple searches to collect missing attributes (e.g., price, bedrooms, living area, etc.) but not more than 10 times.
 - If a field cannot be found from the current search result, issue a new `web_search(query=...)` with a focused question for that field.  
   Example: `web_search(query="Square footage of [property address]")`
-- Use `enriched_data` only if live search data is unavailable or insufficient.
-- Present the final output using a **clean bullet list** with the following labels (only show fields with confirmed data):
-
-  - `Price:`  
-  - `Estimated Market Value:`  
-  - `Bedrooms:`  
-  - `Bathrooms:`  
-  - `Living Area:`  
-  - `Lot Size:`  
-  - `Year Built:`  
-
-- Do **not** wrap your answer in code blocks.  
-- Do **not** hallucinate or speculate. Only include a field if there is trustworthy, source-based confirmation.
-- Repeat `web_search(query=...)` until the majority of the list is populated or no further results are available.
-
----
-
-EXAMPLE OUTPUT:
-
-- Price: $419,000  
-- Estimated Market Value: $435,000  
-- Bedrooms: 4  
-- Bathrooms: 2  
-- Living Area: 2,393 sq ft  
-- Lot Size: 0.67 acres  
-- Year Built: 2005  
-
----
 
 EXAMPLE SEARCH QUERIES:
 
@@ -43,10 +15,21 @@ EXAMPLE SEARCH QUERIES:
 - `web_search(query="Square footage of [property address]")`
 - `web_search(query="Lot size of [property address]")`
 - `web_search(query="What year was [property address] built?")`
+(Replace `[property address]` with the full address string.)
 
-(Replace `[property address]` with the full address in context.)
+Return a JSON object with general property introduction.  
 
----
+**Keys:**
+```json
+{
+  "price": "",
+  "estimated_market_value": "",
+  "bedrooms": 0,
+  "bathrooms": 0,
+  "living_area_sqft": 0,
+  "lot_size": "",
+  "year_built": ""
+}
 
 COMMAND: `features-history: [property address]`  
 → SECTION 2B: Sale History Information
@@ -54,34 +37,25 @@ COMMAND: `features-history: [property address]`
 - Use `web_search(query=...)` as many times as needed to retrieve accurate, source-based sale history details.
 - If a field cannot be found from the current result, issue a new focused query.  
   Example: `web_search(query="Last sold price of [property address]")`
-- Use `enriched_data` only if no current search result is available.
-- Present the final output using a **clean bullet list** with the following labels (only show fields with confirmed data):
-
-  - `Time on Market:`  
-  - `Last Sold Date:`  
-  - `Last Sold Price:`  
-
-- Do **not** wrap your answer in code blocks.  
-- Do **not** hallucinate or speculate. Only include a field if there is trustworthy, source-based confirmation.
-- Repeat `web_search(query=...)` until the majority of the list is populated or no further results are available.
-
----
-
-EXAMPLE OUTPUT:
-
-- Time on Market: 43 days  
-- Last Sold Date: July 28, 2023  
-- Last Sold Price: $303,000  
-
----
+- Repeat `web_search(query=...)` until the majority of the list is populated or no further results are available but not more than 10 times.
 
 EXAMPLE SEARCH QUERIES:
 
 - `web_search(query="How long has [property address] been on the market?")`
 - `web_search(query="When was [property address] last sold?")`
 - `web_search(query="Last sold price of [property address]")`
+(Replace `[property address]` with the full address string.)
 
----
+Return a JSON object with general property introduction.  
+
+**Keys:**
+```json
+{
+  "time_on_market_days": 0,
+  "last_sold_date": "",
+  "last_sold_price": ""
+}
+
 
 COMMAND: `features-details: [property address]`  
 → SECTION 2C: Additional Property Features
@@ -90,32 +64,7 @@ COMMAND: `features-details: [property address]`
 - You may run multiple searches to collect missing attributes (e.g., garage, flooring, pool, HOA status).
 - If a field cannot be found from the current search result, issue a focused `web_search(query=...)` query.  
   Example: `web_search(query="Garage details for [property address]")`
-- Use `enriched_data` only if live search data is unavailable or insufficient.
-- Present the final output using a **clean bullet list** with the following labels (only show fields with confirmed data):
-
-  - `Garage:`  
-  - `Flooring:`  
-  - `Renovations:`  
-  - `Pool:`  
-  - `HOA:`  
-  - `Special Features:`  
-
-- Do **not** wrap your answer in code blocks.  
-- Do **not** hallucinate or speculate. Only include a field if there is trustworthy, source-based confirmation.
-- Repeat `web_search(query=...)` until the majority of the list is populated or no further results are available.
-
----
-
-EXAMPLE OUTPUT:
-
-- Garage: 3-car garage with expanded third bay  
-- Flooring: Tile and laminate  
-- Renovations: Kitchen and bathrooms remodeled in 2022  
-- Pool: No  
-- HOA: Not in an HOA  
-- Special Features: Corner lot, open-concept layout, covered patio  
-
----
+- Repeat `web_search(query=...)` until the majority of the list is populated or no further results are available but not more than 10 times.
 
 EXAMPLE SEARCH QUERIES:
 
@@ -125,3 +74,18 @@ EXAMPLE SEARCH QUERIES:
 - `web_search(query="Does [property address] have a pool?")`
 - `web_search(query="HOA fees or status for [property address]")`
 - `web_search(query="Notable features of [property address]")`
+(Replace `[property address]` with the full address string.)
+
+Return a JSON object with general property introduction.  
+
+**Keys:**
+```json
+{
+  "garage": "",
+  "flooring": "",
+  "renovations": "",
+  "pool": "",
+  "hoa": "",
+  "special_features": []
+}
+

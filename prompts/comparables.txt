@@ -1,82 +1,83 @@
-## COMMAND: `comparable: [property address]`  
+COMMAND comparable: [property address]
 
-### Process  
+Return a JSON array of comparable properties.
 
-- Search for **recently listed or sold homes within 0.5–1 mile radius** of the target property.  
-- Ensure comparables are in the **same school district** and consider **rivers, highways, or train tracks** that may influence values.  
-- Prefer homes sold in the **last 3–6 months** (12 months if the market is very stable).  
-- Collect as many of the following attributes as possible for each comparable.  
+Inclusion Criteria:
 
-### Comparable Fields  
+ - Distance: 0.5–1.5 miles
 
-- Address  
-- Listing Status (Active / Pending / Sold)  
-- Listing Price  
-- Closing Price (if sold)  
-- Living Area (sq ft)  
-- $/Sq Ft  
-- Bedrooms  
-- Bathrooms  
-- Lot Size (sq ft or acres) and Shape (if available)  
-- Garage (size/type)  
-- Year Built  
-- Recent Renovations / Condition (e.g., remodeled, original, needs work)  
-- Finishes (floors, kitchen, bathrooms, windows, roof, HVAC)  
-- Style and Design (e.g., ranch, contemporary, colonial)  
-- Type of Construction (single-family, townhome, condo [include floor], multifamily [2–4 units])  
-- Days on Market  
-- Seller Motivation (regular sale, foreclosure, short sale)  
-- Listing URL  
+ - Same construction type (home, townhome, multifamily, apartment)
 
----
+ - Same school district and demographics
 
-### Output Format  
+ - Last sale: within 3–6 months
 
-For each comparable property, use a structured bullet list:
+ - Size/features: ±15–20% living area, bedrooms, bathrooms, lot size, garage, luxury features (view, dock, tech)
 
-**Comparable #1**  
-- Address:  
-- Status:  
-- Listing Price:  
-- Closing Price:  
-- Living Area:  
-- $/Sq Ft:  
-- Bedrooms:  
-- Bathrooms:  
-- Lot Size:  
-- Garage:  
-- Year Built:  
-- Renovations / Condition:  
-- Finishes:  
-- Style / Design:  
-- Construction Type:  
-- Days on Market:  
-- Seller Motivation:  
-- Listing URL:  
+ EXAMPLE SEARCH QUERIES:
+ - `web_search(query="Recently sold homes within 1 mile of [property address]")`  
+ - `web_search(query="Homes sold last 6 months near [property address] same school district")`  
+ - `web_search(query="Price per square foot homes near [property address]")`  
+ - `web_search(query="Garage details for homes near [property address]")`  
+ - `web_search(query="Renovations or condition of [property address] comparable homes")`  
+ - `web_search(query="Days on market for homes near [property address]")`  
+ - `web_search(query="Foreclosure or short sale homes near [property address]")`
 
----
+ (Replace `[property address]` with the full address string.)
 
-### Summary Section  
+Return a JSON object with general property introduction.  
 
-After listing at least 3 comparables, include:  
+**Keys:**
+```json
+[
+   "123 Main St, Miami, FL, 33333"
+]
 
-- Comparable Price Range: lowest – highest  
-- Average $/Sq Ft  
-- Typical Property Profile: summarize beds, baths, sqft, year built range  
-- Summary Comparison: 1–2 factual sentences on how the subject property compares statistically  
+COMMAND: `comparables-report: [property address]`  
 
----
+Generate a **verbose and comprehensive comparative report** between the subject property and its comparable properties, using only the data available in the current session and verified external sources.  
 
-### Example Search Queries  
+### Required Calculations
+- `average_price_per_sqft`: Calculate the average $/sqft of all comparable properties.  
+- `price_range`: Report the minimum and maximum property prices in the last 6 months.  
+- `market_tendency`: Determine if the market shows an upward, stable, or downward trend based on comparable data.  
 
-- `web_search(query="Recently sold homes within 1 mile of [property address]")`  
-- `web_search(query="Homes sold last 6 months near [property address] same school district")`  
-- `web_search(query="Price per square foot homes near [property address]")`  
-- `web_search(query="Garage details for homes near [property address]")`  
-- `web_search(query="Renovations or condition of [property address] comparable homes")`  
-- `web_search(query="Days on market for homes near [property address]")`  
-- `web_search(query="Foreclosure or short sale homes near [property address]")`  
+### Report Sections
+1. **Introduction**  
+   - Summarize the subject property’s key features (type, size, price, condition, year built, etc.).  
+   - Summarize the comparable properties’ overall profile (beds, baths, living area ranges, year built ranges, prices).  
 
----
+2. **Comparables Analysis**  
+   - Present metrics in detail:  
+     - Average price per sqft in the area.  
+     - Price range over the last 6 months.  
+     - Market tendency (rise, stable, decline).  
+   - Provide a structured breakdown of comparable properties highlighting similarities and differences from the subject property.  
 
-⚠️ Important: Continue issuing `web_search(query=...)` until most comparable fields are populated but not more than 10 times. If data cannot be found, omit the field. Never speculate.  
+3. **Conclusions**  
+   - Provide a factual comparison of the subject property against area benchmarks.  
+   - Explicitly state whether the subject property is **below, within, or above** area pricing, and list the reasons why (e.g., larger lot, recent renovations, fewer amenities).  
+
+### Global Rules
+1. 🧠 **Be Factual and Accurate**  
+   - Use only verifiable data. If missing, request additional `web_search(query=...)` calls.  
+   - Never fabricate values.  
+
+2. 🗣️ **Use a Professional, Neutral Tone**  
+   - Avoid marketing language.  
+   - Focus only on objective, measurable data.  
+
+3. 🤐 **Avoid Opinions or Advice**  
+   - No speculative statements or subjective recommendations.  
+
+4. ⚖️ **Handle Sensitive Information with Care**  
+   - Present demographic or socioeconomic data as raw statistics only.  
+   - Never interpret race, age, crime, or income data.  
+
+5. 🔁 Completeness
+
+   Use multiple searches if needed until most information is complete.
+
+6. 📎 Citations
+
+   Always include source URLs for comparables (Zillow, Realtor.com, Redfin).

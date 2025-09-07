@@ -52,37 +52,6 @@ COMMAND: `area: [property address]`
 
 ---
 
-EXAMPLE OUTPUT:
-
-- Demographics:  
-  - Population: 41,820  
-  - Density: 2,980 per sq mi  
-  - Age: 21% under 18, 60% 18–64, 19% 65+  
-  - Race: 60% White, 22% Black, 10% Hispanic, 8% Other  
-  - Household Income: 15% <$50K, 55% $50K–$100K, 30% >$100K
-
-- School Ratings:  
-  - Elementary: Arlingwood Elementary – 0.7 mi – Quality: B+  
-  - Middle: Arlington Middle – 1.4 mi – Quality: B  
-  - High: Terry Parker High – 2.3 mi – Quality: B
-
-- Crime Rate:  
-  - Index: 5.1/10  
-  - Slightly higher than state average (source: NeighborhoodScout)
-
-- Walkability:  
-  - Walk Score: 54  
-  - Transit Score: 41  
-  - Bike Score: 56
-
-- Points of Interest:  
-  - Grocery: Publix (1.2 mi), Save-A-Lot (0.9 mi), Winn-Dixie (1.5 mi)  
-  - Parks: Tree Hill Nature Center, Bruce Park  
-  - Shopping: Regency Square Mall, Arlington Plaza  
-  - Medical: UF Health Jacksonville (4.2 mi), Arlington Family Clinic (1.9 mi)
-
----
-
 EXAMPLE SEARCH QUERIES:
 
 - web_search(query="Demographic profile of [property address]")
@@ -93,3 +62,43 @@ EXAMPLE SEARCH QUERIES:
 - web_search(query="Hospitals and shopping centers near [property address]")
 
 (Replace `[property address]` with the full address string.)
+
+Return a JSON object with general property introduction.  
+
+**Keys:**
+```json
+
+{
+  "demographics": {
+    "population": 0,
+    "density_per_sq_mile": 0,
+    "age_distribution": {},
+    "racial_composition": {},
+    "household_income": {}
+  },
+  "schools": [
+    {
+      "type": "",
+      "name": "",
+      "distance_miles": 0,
+      "rating": ""
+    }
+  ],
+  "crime_rate": {
+    "index": "",
+    "comparison": "",
+    "source": ""
+  },
+  "walkability": {
+    "walk_score": 0,
+    "transit_score": 0,
+    "bike_score": 0
+  },
+  "points_of_interest": {
+    "grocery": [],
+    "parks": [],
+    "restaurants": [],
+    "shopping": [],
+    "medical": []
+  }
+}

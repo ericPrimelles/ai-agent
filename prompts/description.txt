@@ -1,16 +1,25 @@
-COMMAND: `description: [property address]`  
-→ SECTION 1: General Property Introduction
+### COMMANDS
+
+COMMAND: `description: [property address]` 
 
 - Use `web_search` to retrieve high-level details about the property at the specified address.
-- Write a short **introductory paragraph (2–3 sentences max)** describing the type of home, layout, and appeal.
+
 - Include:
   - Property type (e.g., single-family home, condo)
   - Bedroom and bathroom count
   - General layout (e.g., split floorplan, open-concept)
   - Design style or construction era (e.g., mid-century, contemporary, brick exterior)
-- Mention nearby area attributes only if they are clearly available (e.g., neighborhood name, proximity to landmarks).
-- Do **not** use vague or marketing language like “inviting” or “perfect” unless explicitly supported by the data.
-- The output must be in paragraph form — **no bullet points**.
 
-EXAMPLE OUTPUT:
-"This beautifully renovated 3-bedroom, 1.5-bathroom brick home at 2556 Burlingame Dr W, Jacksonville, FL, features a classic mid-century layout with refinished hardwood floors and an attached garage. Built in 1957, the 1,488 sq ft property offers an open floor plan ideal for entertaining, and is situated on a spacious 0.25-acre lot in the Arlingwood neighborhood."
+Return a JSON object with general property introduction.  
+**Keys:**  
+```json
+{
+  "property_type": "",
+  "bedrooms": 0,
+  "bathrooms": 0,
+  "layout": "",
+  "construction_style": "",
+  "era": "",
+  "neighborhood": "",
+  "notable_landmarks": []
+}
