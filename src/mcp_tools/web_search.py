@@ -1,5 +1,8 @@
 from mcp.server.fastmcp import FastMCP
 from langchain_tavily import TavilySearch
+from dotenv import load_dotenv
+load_dotenv(dotenv_path='../../.env')
+
 
 mcp = FastMCP('web_search')
 
@@ -17,7 +20,7 @@ def web_search(query: str) -> dict:
     try:
         
         search = TavilySearch(
-            max_results=5,
+            max_results=3,
             include_images=True,
             topic="general",
 
