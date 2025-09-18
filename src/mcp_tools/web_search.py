@@ -1,4 +1,5 @@
 from mcp.server.fastmcp import FastMCP
+from langchain_tavily import TavilySearch
 
 mcp = FastMCP('web_search')
 
@@ -21,36 +22,17 @@ def web_search(query: str) -> dict:
             topic="general",
 
         )
-        results = search.invoke({'query': get_query(event)})
-        actionGroup = event.get('actionGroup', None)
-        fnc = event.get('function', None)
-        print(event)
-        print(actionGroup)
-        print(results)
+        results = search.invoke({'query':query})
         data = results.get('results', [])
         urls = [d.get('url') for d in data if d.get('url') ]
         #enrichment = scrapper({'urls': urls}, {})
 
-        final_result = {
+        return  {
             'images' : results.get('images', []),
             'search_result' : results.get('results', []),
             #'enriched_data' : enrichment
             }
-        return {
-            "messageVersion": "1.0",
-            "response": {
-                "actionGroup" : actionGroup,
-                "function" : fnc,                
-                "functionResponse" : {
-                   
-                   "responseBody" : {
-                      "TEXT": {
-                         "body": json.dumps(final_result)
-                      }
-                   }
-                }
-            }
-        }
+        
     except Exception as e:
         print(f"Error processing event: {str(e)}")
         return {
