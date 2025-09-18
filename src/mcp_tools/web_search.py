@@ -40,3 +40,5 @@ def web_search(query: str) -> dict:
             "body": f"An error occurred: {str(e)}"
         }
     
+if __name__ == "__main__":
+    mcp.run(transport='stdio')
