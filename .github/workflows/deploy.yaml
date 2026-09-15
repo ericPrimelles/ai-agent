@@ -1,0 +1,77 @@
+name: Deploy drivestate-AI-Agent
+
+on:
+    push:
+        branches:
+            - main
+            - ai-agent
+jobs:
+    deploy:
+        name: Deploy Agent
+
+        runs-on: ubuntu-latest
+
+        env:
+            AWS_REGION: us-east-1
+            STAGE: dev
+            SERVERLESS_ACCESS_KEY: ${{secrets.SERVERLESS_ACCESS_KEY}}
+        
+        steps:
+            - name: Checkout repo
+              uses: actions/checkout@v3
+
+            - name: Set up Python
+              uses: actions/setup-python@v3
+              with:
+                python-version: "3.13"
+            - name: Set up NodeJs
+              uses: actions/setup-node@v4
+             
+            - name: Serverless Deploy
+              run: |
+                
+                # export STAGE=dev
+                                
+                export TAVILY_API_KEY=${{ secrets.TAVILY_API_KEY }}
+                
+
+                
+
+                #Export KNOWLEDGE AWS credentials
+                export AWS_ACCESS_KEY_ID=${{ secrets.AWS_ACCESS_KEY }}
+                export AWS_SECRET_ACCESS_KEY=${{ secrets.AWS_SECRET_ACCESS_KEY }}
+                export AWS_REGION=${{ env.AWS_REGION }}
+                export ALB_DNS=$(aws cloudformation describe-stacks \
+                    --stack-name dvst-knwledge-scrapper \
+                    --query "Stacks[0].Outputs[?OutputKey=='AlbDns'].OutputValue" \
+                    --output text)
+
+                
+                cd src
+                chmod +x package_lambdas.sh
+                ./package_lambdas.sh
+                cd ..
+                npm i -g serverless 
+                
+                
+                sls login 
+                npm install serverless-appsync-plugin ---debug
+                sls package --stage $STAGE --region $AWS_REGION
+                sls deploy --stage $STAGE --region $AWS_REGION
+                
+                export AGENT_ID=$(aws ssm get-parameter --name /dvst-ai-agent/dev/agent-id --query Parameter.Value --output text)
+                export AGENT_ALIAS_ID=$(aws ssm get-parameter --name /dvst-ai-agent/$STAGE/agent-alias --query Parameter.Value --output text)
+                
+                # export AGENT_VERSION=$(aws bedrock-agent publish-agent-version \
+                #   --agent-id $AGENT_ID \
+                #   --description "Auto-publish on $(date -u +"%Y-%m-%dT%H:%M:%SZ")" \
+                #   --region $AWS_REGION \
+                #   --query 'agentVersion' \
+                #   --output text)
+                
+                aws bedrock-agent update-agent-alias \
+                  --agent-id $AGENT_ID \
+                  --agent-alias-id $AGENT_ALIAS_ID \
+                  --agent-alias-name dvst-ai-agent-alias-$STAGE \
+                  --region $AWS_REGION
+

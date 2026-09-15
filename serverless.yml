@@ -1,0 +1,196 @@
+service: dvst-ai-agent-${env:STAGE}  # Change to your project/service name
+
+frameworkVersion: '4'
+
+provider:
+  name: aws
+  runtime: python3.13  # or python3.11, etc.
+  region: us-east-1
+  stage: ${env:STAGE}
+  memorySize: 128
+  timeout: 60
+  environment:
+    STAGE: ${opt:stage, 'dev'}
+    APP_NAME: my-service-name
+  iam:
+    role:
+      statements:
+        - Effect: Allow
+          Action:
+            - logs:CreateLogGroup
+            - logs:CreateLogStream
+            - logs:PutLogEvents
+          Resource: "arn:aws:logs"
+
+
+package:
+  individually: true 
+  exclude:
+    - ./**
+  include:
+    
+    - src/dist/*
+
+
+  
+functions:
+  openai:
+    name: dvst-ai-agent-search-lambda-${sls:stage}
+    handler: search_lambda.handler
+    package: 
+      # include:
+      #   - src/openai_proxy/*
+      artifact: src/dist/search_lambda.zip
+    environment:
+      TAVILY_API_KEY: ${env:TAVILY_API_KEY}  # Ensure this is set in your environment or secrets
+      ALB_DNS: ${env:ALB_DNS}
+  
+      
+   
+
+resources:
+  Parameters:
+    ModelId:
+      Type: String
+      Default: "amazon.nova-pro-v1:0"  # Change to your desired model ID
+    
+  Resources:
+    AiDvstAgentServiceRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                Service: bedrock.amazonaws.com
+              Action: sts:AssumeRole
+        ManagedPolicyArns:
+          - arn:aws:iam::aws:policy/AmazonBedrockFullAccess
+          - arn:aws:iam::aws:policy/service-role/AWSLambdaBasicExecutionRole
+        Policies:
+          - PolicyName: Lambda
+            PolicyDocument:
+              Version: '2012-10-17'
+              Statement:
+                - Effect: Allow
+                  Action:
+                    - lambda:InvokeFunction
+                  Resource: '*'
+                    #- !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}"
+                    #- !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}:$LATEST"
+    
+          
+
+    AiDvstAgent:
+      Type: AWS::Bedrock::Agent
+      Properties:
+        AgentName: dvst-ai-agent-${sls:stage}
+        Description: "AI Agent for driving state data"
+        AgentResourceRoleArn: !GetAtt AiDvstAgentServiceRole.Arn
+        FoundationModel: !Sub "arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:inference-profile/us.amazon.nova-pro-v1:0"  # Use the ModelId parameter defined above
+        AutoPrepare: true
+        Instruction: |
+          ${file(./prompts/instructions.txt)}
+          ${file(./prompts/description.txt)}
+          ${file(./prompts/features.txt)}
+          ${file(./prompts/area.txt)}
+          ${file(./prompts/comparables.txt)}
+        ActionGroups:
+          - ActionGroupName: web_search
+            Description: "Web search action"
+            ActionGroupExecutor:
+              Lambda:  !Sub "arn:aws:lambda:${AWS::Region}:${AWS::AccountId}:function:dvst-ai-agent-search-lambda-${sls:stage}"
+            FunctionSchema:
+              Functions:
+                - Name: web_search
+                  Description: "Search the web for public real estate information"
+                  Parameters: 
+                    query:
+                      Type: string
+                      Description: "Search query for the web search"
+                      Required: true
+          
+
+        MemoryConfiguration:
+          EnabledMemoryTypes:
+            - SESSION_SUMMARY
+          SessionSummaryConfiguration:
+            MaxRecentSessions: 5
+          StorageDays: 30
+    AiDvstAgentAlias:
+      Type: AWS::Bedrock::AgentAlias
+      Properties:
+        AgentId: !Ref AiDvstAgent
+        AgentAliasName: dvst-ai-agent-alias-${sls:stage}
+        Description: "Alias for the AI Agent"
+        # RoutingConfiguration:
+        #   - AgentVersion: "1"
+    
+    AiDvstWebSearchLambdaPermissions:
+      Type: AWS::Lambda::Permission
+      DependsOn: AiDvstAgentAlias
+      Properties:
+        Action: lambda:InvokeFunction
+        FunctionName: !Sub "dvst-ai-agent-search-lambda-${sls:stage}"
+        Principal: bedrock.amazonaws.com
+        SourceArn: !Sub "arn:aws:bedrock:${AWS::Region}:${AWS::AccountId}:agent/*"
+    
+    AiDvstAgentIdParameter:
+      Type: AWS::SSM::Parameter
+      Properties:
+        Name: /dvst-ai-agent/${sls:stage}/agent-id
+        Type: String
+        Value: !Ref AiDvstAgent
+        Description: "Stores the Bedrock Agent ID for the current stage"
+    
+    AiDvstAgentAliasParameter:
+      Type: AWS::SSM::Parameter
+      Properties:
+        Name: /dvst-ai-agent/${sls:stage}/agent-alias
+        Type: String
+        Value: !GetAtt AiDvstAgentAlias.AgentAliasId
+        Description: "Stores the Bedrock Agent ID for the current stage"
+
+    AiDvstServiceBucket:
+      Type: AWS::S3::Bucket
+      Properties:
+        BucketName: !Sub "dvst-ai-agent-${sls:stage}-bucket"
+        VersioningConfiguration:
+          Status: Enabled
+        LifecycleConfiguration:
+          Rules:
+            - Id: "ExpireOldVersions"
+              Status: Enabled
+              NoncurrentVersionExpirationInDays: 30
+        AccessControl: Private
+        
+    CrossAccountInvokationRole:
+      Type: AWS::IAM::Role
+      Properties:
+        AssumeRolePolicyDocument:
+          Version: '2012-10-17'
+          Statement:
+            - Effect: Allow
+              Principal:
+                AWS: "arn:aws:iam::503698125259:root"
+              Action: sts:AssumeRole
+        Policies:
+          - PolicyName: BedrockInvokation
+            PolicyDocument:
+              Version: "2012-10-17"
+              Statement:
+                - Sid: Bedrock
+                  Effect: Allow
+                  Action:
+                    - "bedrock:InvokeAgent"
+                  Resource: "*"
+      
+    CrossAccountArnParameter:
+      Type: AWS::SSM::Parameter
+      Properties:
+        Name: /dvst-ai-agent/${sls:stage}/cross-account-role-arn
+        Type: String
+        Value: !GetAtt CrossAccountInvokationRole.Arn
+        Description: "Stores the Bedrock Agent ID for the current stage"
+    

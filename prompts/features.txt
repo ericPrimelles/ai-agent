@@ -1,0 +1,91 @@
+COMMAND: `features-basic: [property address]`  
+→ SECTION 2A: Core Property Information
+
+- Use `web_search(query=...)` as many times as needed to retrieve accurate, property-specific features.
+- You may run multiple searches to collect missing attributes (e.g., price, bedrooms, living area, etc.) but not more than 10 times.
+- If a field cannot be found from the current search result, issue a new `web_search(query=...)` with a focused question for that field.  
+  Example: `web_search(query="Square footage of [property address]")`
+
+EXAMPLE SEARCH QUERIES:
+
+- `web_search(query="Price of [property address]")`
+- `web_search(query="Estimated market value of [property address]")`
+- `web_search(query="How many bedrooms does [property address] have?")`
+- `web_search(query="How many bathrooms does [property address] have?")`
+- `web_search(query="Square footage of [property address]")`
+- `web_search(query="Lot size of [property address]")`
+- `web_search(query="What year was [property address] built?")`
+(Replace `[property address]` with the full address string.)
+
+Return a JSON object with general property introduction.  
+
+**Keys:**
+```json
+{
+  "price": "",
+  "estimated_market_value": "",
+  "bedrooms": 0,
+  "bathrooms": 0,
+  "living_area_sqft": 0,
+  "lot_size": "",
+  "year_built": ""
+}
+
+COMMAND: `features-history: [property address]`  
+→ SECTION 2B: Sale History Information
+
+- Use `web_search(query=...)` as many times as needed to retrieve accurate, source-based sale history details.
+- If a field cannot be found from the current result, issue a new focused query.  
+  Example: `web_search(query="Last sold price of [property address]")`
+- Repeat `web_search(query=...)` until the majority of the list is populated or no further results are available but not more than 10 times.
+
+EXAMPLE SEARCH QUERIES:
+
+- `web_search(query="How long has [property address] been on the market?")`
+- `web_search(query="When was [property address] last sold?")`
+- `web_search(query="Last sold price of [property address]")`
+(Replace `[property address]` with the full address string.)
+
+Return a JSON object with general property introduction.  
+
+**Keys:**
+```json
+{
+  "time_on_market_days": 0,
+  "last_sold_date": "",
+  "last_sold_price": ""
+}
+
+
+COMMAND: `features-details: [property address]`  
+→ SECTION 2C: Additional Property Features
+
+- Use `web_search(query=...)` as many times as needed to retrieve accurate property-specific features.
+- You may run multiple searches to collect missing attributes (e.g., garage, flooring, pool, HOA status).
+- If a field cannot be found from the current search result, issue a focused `web_search(query=...)` query.  
+  Example: `web_search(query="Garage details for [property address]")`
+- Repeat `web_search(query=...)` until the majority of the list is populated or no further results are available but not more than 10 times.
+
+EXAMPLE SEARCH QUERIES:
+
+- `web_search(query="Garage details for [property address]")`
+- `web_search(query="Flooring type at [property address]")`
+- `web_search(query="Has [property address] been renovated recently?")`
+- `web_search(query="Does [property address] have a pool?")`
+- `web_search(query="HOA fees or status for [property address]")`
+- `web_search(query="Notable features of [property address]")`
+(Replace `[property address]` with the full address string.)
+
+Return a JSON object with general property introduction.  
+
+**Keys:**
+```json
+{
+  "garage": "",
+  "flooring": "",
+  "renovations": "",
+  "pool": "",
+  "hoa": "",
+  "special_features": []
+}
+

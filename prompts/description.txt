@@ -1,0 +1,25 @@
+### COMMANDS
+
+COMMAND: `description: [property address]` 
+
+- Use `web_search` to retrieve high-level details about the property at the specified address.
+
+- Include:
+  - Property type (e.g., single-family home, condo)
+  - Bedroom and bathroom count
+  - General layout (e.g., split floorplan, open-concept)
+  - Design style or construction era (e.g., mid-century, contemporary, brick exterior)
+
+Return a JSON object with general property introduction.  
+**Keys:**  
+```json
+{
+  "property_type": "",
+  "bedrooms": 0,
+  "bathrooms": 0,
+  "layout": "",
+  "construction_style": "",
+  "era": "",
+  "neighborhood": "",
+  "notable_landmarks": []
+}
